@@ -1,2 +1,5 @@
-Example/PullToDismissTransition-Example.xcodeproj/xcuserdata
-Example/PullToDismissTransition-Example.xcodeproj/project.xcworkspace/xcuserdata
+.DS_Store
+/.build
+/Packages
+/*.xcodeproj
+**/xcuserdata/
