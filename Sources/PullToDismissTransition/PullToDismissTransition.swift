@@ -67,6 +67,7 @@ public class PullToDismissTransition: UIPercentDrivenInteractiveTransition {
 
     private weak var dimmingView: UIView?
     private weak var scalingView: UIView?
+    private weak var previousSnapshotView: UIView?
     private var transitionIsActiveFromTranslationPoint: CGPoint?
 
     private var didRequestScrollViewBounceDisable = false
@@ -378,6 +379,11 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
                 }
             }
         }
+        
+        if let toVC = transitionContext.viewController(forKey: .to), viewController.modalPresentationStyle == .fullScreen, let snapshot = toVC.view.snapshotView(afterScreenUpdates: true) {
+            previousSnapshotView = snapshot
+            transitionContext.containerView.insertSubview(snapshot, belowSubview: dimmingView ?? viewController.view)
+        }
     }
 
     private func tearDownTransitionViewsAsNecessary(
@@ -410,6 +416,8 @@ extension PullToDismissTransition: UIViewControllerAnimatedTransitioning {
             if finished {
                 self?.dimmingView?.removeFromSuperview()
                 self?.dimmingView = nil
+                self?.previousSnapshotView?.removeFromSuperview()
+                self?.previousSnapshotView = nil
             }
 
             completionHandler?()
